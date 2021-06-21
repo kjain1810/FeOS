@@ -141,3 +141,13 @@ pub fn _print(arg: fmt::Arguments) {
     use core::fmt::Write;
     WRITER.lock().write_fmt(arg).unwrap();
 }
+
+#[test_case]
+fn test_vga_buffer() {
+    let s = "vga buffer lol";
+    println!("{}", s);
+    for (idx, ch) in s.chars().enumerate() {
+        let screen_char = WRITER.lock().buffer.chars[BUFFER_HEIGHT - 2][idx].read();
+        assert_eq!(ch, char::from(screen_char.ascii_character));
+    }
+}
